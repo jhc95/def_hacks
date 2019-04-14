@@ -117,5 +117,11 @@
     "eeee": {
         "password": "eeee",
         "information": {}
+    },
+    "jhc95@uw.edu": {
+        "password": "12345",
+        "information": {
+            "email": "jhc95@uw.edu"
+        }
     }
 }
