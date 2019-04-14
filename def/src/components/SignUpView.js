@@ -21,6 +21,11 @@ export default class SignUpView extends React.Component {
 
     handleSubmit(evt) {
         evt.preventDefault();
+
+        if (this.state.email === undefined || this.state.password === undefined) {
+            alert("please enter email and/or password")
+        }
+        console.log("123123")
         var info = JSON.stringify({
             "first": this.state.first,
             "last": this.state.last,
@@ -53,26 +58,21 @@ export default class SignUpView extends React.Component {
             "monthsAtBank": this.state.monthsAtBank,
             "bankAccountNumber": this.state.bankAccountNumber
         })
-        // localStorage.setItem("email", this.state.email)
-        // localStorage.setItem("password", this.state.password)
-        // localStorage.setItem("info", info)
-        const token = 'e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2'
-        // save user info to database
-        fetch('https://api.evenfinancial.com/originator/rateTables/840b913a-ce7d-479e-9291-c2eb8df5c292', {
+        var body = JSON.stringify({
+            username: this.state.email,
+            password: this.state.password
+            , information: info
+        })
+        fetch('http://127.0.0.1:5002/accounts', {
             method: 'POST',
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-                'Authorization': 'Bearer ' + token,
+            headers: new Headers({
                 "Content-Type": "application/json"
-            },
-            body: info,
-            // ,mode: "no-cors"
-        }).then(function(response) {
-            console.log(response.json());
+            }),
+            body: body
+            ,mode: "no-cors"
         });
         // go to sign in page
-        window.location = "http://localhost:3000/signin"
+        // window.location = "http://localhost:3000/signin"
     }
 
     render() {
@@ -121,12 +121,12 @@ export default class SignUpView extends React.Component {
                             </div>
                         </div>
                         {this.state.email === "" ? (
-                                                <div className="alert alert-danger mt-2">
-                                                    Email is required
+                            <div className="alert alert-danger mt-2">
+                                Email is required
                                                 </div>
-                                            ) : (
-                                                undefined
-                                            )}
+                        ) : (
+                                undefined
+                            )}
                         <div className="row">
                             <div className="col-md-4"></div>
                             <div className="form-group col-md-4">
@@ -532,7 +532,7 @@ export default class SignUpView extends React.Component {
                                     onInput={evt => this.setState({ payDate1: evt.target.value })}
                                 />
                             </div>
-                        </div>                      
+                        </div>
                         <div className="row">
                             <div className="col-md-4"></div>
                             <div className="form-group col-md-4">
@@ -545,12 +545,12 @@ export default class SignUpView extends React.Component {
                             </div>
                         </div>
                         {this.state.password === "" ? (
-                                                <div className="alert alert-danger mt-2">
-                                                    Password is required
+                            <div className="alert alert-danger mt-2">
+                                Password is required
                                                 </div>
-                                            ) : (
-                                                undefined
-                                            )}
+                        ) : (
+                                undefined
+                            )}
                         <div className="row">
                             <div className="col-md-4"></div>
                             <div className="form-group col-md-4">
