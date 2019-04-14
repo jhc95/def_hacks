@@ -26,7 +26,7 @@ export default class SignUpView extends React.Component {
             alert("please enter email and/or password")
         }
         console.log("123123")
-        var info = JSON.stringify({
+        var info = {
             "first": this.state.first,
             "last": this.state.last,
             "email": this.state.email,
@@ -57,7 +57,7 @@ export default class SignUpView extends React.Component {
             "bankAccountType": this.state.bankAccountType,
             "monthsAtBank": this.state.monthsAtBank,
             "bankAccountNumber": this.state.bankAccountNumber
-        })
+        }
         var body = JSON.stringify({
             username: this.state.email,
             password: this.state.password
