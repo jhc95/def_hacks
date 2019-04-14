@@ -9,7 +9,7 @@
 		"default_title": "LoanOptions"
 	},
 	"content_scripts": [{
-        "matches": ["https://www.amazon.com/gp/buy/spc/handlers/display.html?hasWorkingJavascript=1"],
+        "matches": ["https://www.amazon.com/gp/buy/*", "https://www.expedia.com/Flights*"],
         "all_frames": true,
         "js":["content.js"]
     }],
