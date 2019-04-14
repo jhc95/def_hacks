@@ -1,0 +1,77 @@
+{
+    "admin": {
+        "password": "admin",
+        "information": {
+            "productTypes": [
+                "loan",
+                "savings",
+                "credit_card",
+                "mortgage"
+            ],
+            "personalInformation": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "john@example.com",
+                "city": "Washington",
+                "state": "WA",
+                "workPhone": "2125551234",
+                "primaryPhone": "2125556789",
+                "address1": "45 West 21st Street",
+                "address2": "5th Floor",
+                "zipcode": "98105",
+                "monthsAtAddress": 6,
+                "driversLicenseNumber": "111222333",
+                "driversLicenseState": "WA",
+                "activeMilitary": false,
+                "militaryVeteran": false,
+                "dateOfBirth": "1996-02-27",
+                "educationLevel": "bachelors"
+            },
+            "loanInformation": {
+                "purpose": "auto",
+                "loanAmount": 35000
+            },
+            "creditCardInformation": {
+                "allowAnnualFee": true,
+                "cardBenefits": [
+                    "travel_incentives",
+                    "earning_rewards",
+                    "improve_credits"
+                ]
+            },
+            "creditInformation": {
+                "providedCreditRating": "excellent",
+                "providedNumericCreditScore": 746
+            },
+            "financialInformation": {
+                "employmentStatus": "employed",
+                "employmentPayFrequency": "biweekly",
+                "annualIncome": 95000,
+                "monthlyNetIncome": 6600
+            },
+            "employmentInformation": {
+                "employerCity": "Bellevue",
+                "employerState": "WA",
+                "employerZip": "98004",
+                "jobTitle": "Software Engineer",
+                "monthsEmployed": 8,
+                "directDeposit": true
+            },
+            "legalInformation": {
+                "consentsToFcra": true,
+                "consentsToTcpa": true,
+                "tcpaLanguage": "I agree to be contacted by Even Financial and its partners at the telephone number(s) I have provided above to explore personal loan offers, including contact through automatic dialing systems, artificial or pre-recorded voice messaging, or text message. I understand my consent is not required as a condition to purchasing any goods or services from anyone."
+            }
+        }
+    },
+    "eric": {
+        "password": "mypwd",
+        "information": {}
+    },
+    "eric1": {
+        "password": "mypwd",
+        "information": {
+            "a": "b"
+        }
+    }
+}
