@@ -37,7 +37,7 @@ def handle_invalid_usage(error):
 
 class Accounts(Resource):
     def post(self):
-        data = request.get_json()
+        data = json.loads(request.data.decode('utf-8'))
         if 'username' not in data or 'password' not in data:
             raise InvalidUsage('Missing username or password.', status_code=400)
         try: 
