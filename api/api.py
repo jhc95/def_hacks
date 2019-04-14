@@ -48,11 +48,14 @@ class Accounts(Resource):
             raise InvalidUsage('Invalid password.', status_code=400)
         except AccountDoesNotExist:
             # create account
-            info = data.get('information', {})
-            try:
-                Account.create_account(data['username'], data['password'], info)
-            except AccountAlreadyExist:
-                raise InvalidUsage('This is not good.', status_code=400)
+            if 'information' in data:
+                info = data['information']
+                try:
+                    Account.create_account(data['username'], data['password'], info)
+                except AccountAlreadyExist:
+                    raise InvalidUsage('This is not good.', status_code=400)
+            else:
+                raise InvalidUsage('Account does not exist.', status_code=400)
             return info, 201
 
 class Offers(Resource):
