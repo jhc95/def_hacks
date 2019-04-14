@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 import json
 import requests
+import time
 from enum import Enum, auto
 
 from exceptions import (AccountError, AccountAlreadyExist, 
@@ -54,24 +55,43 @@ class Accounts(Resource):
                 raise InvalidUsage('This is not good.', status_code=400)
             return info, 201
 
-class Even(Resource):
+class Offers(Resource):
     def post(self):
-        # print(f'form: {request.form}')
-        # print('=' * 100)
-        # print(request.form.to_dict(flat=False))
-        # print('=' * 100)
-        print(request.get_json())
-        # print('=' * 100)
-        return {'data': request.get_json()}
-        # UUID = '840b913a-ce7d-479e-9291-c2eb8df5c292'
-        # response = requests.get(f'https://api.evenfinancial.com/originator/rateTables/{UUID}',
-        #                         headers={
-        #                             'Authorization': f'Bearer {token}'})
-        # return {'data': response.json()}, 200
+        data = json.loads(request.data.decode('utf-8'))
+        print(data)
+        if 'username' not in data or 'password' not in data:
+            raise InvalidUsage('Missing username or password.', status_code=400)
+        try: 
+            acct = Account.load_account(data['username'], data['password'])
+        except AccountInvalidPassword:
+            raise InvalidUsage('Invalid password.', status_code=400)
+        except AccountDoesNotExist:
+            raise InvalidUsage('Account does not exist.', status_code=400)
+        loan_amt = data.get('override', {}).get('loanInformation', {}).get('loanAmount') 
+        if loan_amt is not None:
+            try:
+                loan_amt = float(loan_amt)
+            except ValueError:
+                raise InvalidUsage(f'Invalid loanAmount: {loan_amt}, type: {type(loan_amt)}', 400)
+            print(f'Loan amount updated: {loan_amt}')
+            acct.info['loanInformation'] = acct.info.get('loanInformation', {})
+            acct.info['loanInformation']['loanAmount'] = loan_amt
+        response = requests.post('https://api.evenfinancial.com/leads/rateTables',
+            headers={'Authorization': f'Bearer {token}'},
+            json=acct.info)
+        if response.status_code not in (201, 200):
+            raise InvalidUsage(f'Even API error. status_code: {response.status_code}', status_code=400)
+        uuid = response.json()['uuid']
+        while len(response.json().get('pendingOriginators', [])) != 0 or \
+            len(response.json().get('pendingResponses', [])) != 0:
+            response = requests.get(f'https://api.evenfinancial.com/originator/rateTables/{uuid}',
+                            headers={'Authorization': f'Bearer {token}'})
+            time.sleep(0.5)
+        return response.json(), 201
 
 
 api.add_resource(Accounts, '/accounts')
-api.add_resource(Even, '/even')
+api.add_resource(Offers, '/offers')
 
 if __name__ == '__main__':
      app.run(port='5002',debug=True)
